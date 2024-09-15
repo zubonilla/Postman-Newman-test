@@ -1,0 +1,158 @@
+{
+	"info": {
+		"_postman_id": "4582b10e-56ba-4932-8f1a-7f30169d18e4",
+		"name": "CollectionTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24266619"
+	},
+	"item": [
+		{
+			"name": "Add user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Verifica si la respuesta es JSON antes de continuar\r",
+							"if (pm.response.headers.get('Content-Type').includes('application/json')) {\r",
+							"    const zbg = pm.response.json();\r",
+							"\r",
+							"    // Guardar el userId en una variable de colección\r",
+							"    pm.collectionVariables.set('userId', zbg.id);\r",
+							"\r",
+							"    // Prueba del código de estado\r",
+							"    pm.test('Status code should be 201', function() {\r",
+							"        pm.response.to.have.status(201);\r",
+							"    });\r",
+							"\r",
+							"    // Prueba para verificar que el email coincida\r",
+							"    pm.test('Email should match', function() {\r",
+							"        pm.expect(zbg.email).to.equal('zbg13.@test.com');\r",
+							"    });\r",
+							"} else {\r",
+							"    console.error(\"La respuesta no es JSON\");\r",
+							"    pm.test('Response is not JSON', function() {\r",
+							"        pm.expect.fail('La respuesta no es de tipo JSON');\r",
+							"    });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"test zbg013\",\r\n \"gender\":\"male\",\r\n \"email\":\"zbg13.@test.com\",\r\n \"status\":\"active\"\r\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{url}}/{{visibility}}/{{version}}/users",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{visibility}}",
+						"{{version}}",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"    // Prueba del código de estado\r",
+							"    pm.test('Status code should be 204', function() {\r",
+							"        pm.response.to.have.status(204);\r",
+							"    });"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{url}}/{{visibility}}/{{version}}/users/{{userId}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{visibility}}",
+						"{{version}}",
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "37a3cec0dbf07c3081fc1cd104b9fd7aeeb9c69659ddfa409dfeea900b5d2b4a",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
